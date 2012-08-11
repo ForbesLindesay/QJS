@@ -1,0 +1,33 @@
+{
+  "name": "qjs",
+  "version": "0.0.0",
+  "description": "Use the await keyword with Q promises to tame your async code",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "esprima": "~0.9.9",
+    "falafel": "~0.1.0",
+    "q": "~0.8.6",
+    "streamline": "~0.4.5"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ForbesLindesay/QJS.git"
+  },
+  "keywords": [
+    "async",
+    "Q",
+    "promise",
+    "compile"
+  ],
+  "author": "ForbesLindesay",
+  "license": "BSD"
+}
