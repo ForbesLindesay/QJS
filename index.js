@@ -1,4 +1,3 @@
-module.exports = require('./compile-streamline');
 var Q = require('q');
 
 module.exports.not = not_qjs;
@@ -123,3 +122,5 @@ function once_qjs(fn, message) {
     return fn.apply(this, arguments);
   };
 }
+
+module.exports.compile = require('./compile-qjs');

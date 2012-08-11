@@ -1,7 +1,12 @@
 var qjs = require('./');
-qjs(module, function () {
-    module.exports.asyncMethod = function addbar(foo) {
-        return 'foo' + await(Q.delay(foo, 2000));
-    };
-    module.exports.asyncMethod('bar').then(console.log).end();
+qjs.compile(module, function () {
+    //Everybody loves a comment
+    function foo() {
+        for (var x = 1,y=10; x < 11; x++) {
+            await(Q.delay(x* 200));
+            console.log(x);
+        }
+        return 'foo';
+    }
+    foo(Q.delay('bar', 1000)).then(console.log).end();
 });
