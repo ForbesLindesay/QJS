@@ -61,6 +61,7 @@ function transformExpressionStatement(node) {
     supportedBlockStatements['FunctionExpression'] = true;
     supportedBlockStatements['WhileStatement'] = true;
     supportedBlockStatements['ForStatement'] = true;
+    supportedBlockStatements['IfStatement'] = true;
     if (node.awaitRequired) {
         if (node.parent.type === 'BlockStatement' && supportedBlockStatements[node.parent.parent.type]) {
             node.update('return Q.when(' + node.awaitRequired.source + ', function _qjs(' + node.awaitRequired.key + ') { ' + node.source());
@@ -102,6 +103,18 @@ statementTransformers['ForStatement'] = function transformForStatement(node) {
         ', function () { return ' + node.test.source() + 
         '; }, function () { return ' + node.increment.source() + '; }).do(function ()  ' + node.body.source() + ')' + 
         '.continue().then(function () {');
+    node.parent.mustTransform = true;
+    node.parent.addEndings = node.parent.addEndings ? node.parent.addEndings + 1 : 1;
+};
+statementTransformers['IfStatement'] = function transformIfStatement(node) {
+    var result = 'return ' + secretPrefix + 'qjs' + 
+        '.if(' + node.test.source() + ').then(function () { '
+        + removeBraces(node.consequent.source()) + '})'
+    if (node.alternate) {
+        result += '.else(function () { ' + removeBraces(node.alternate.source()) + '})';
+    }
+    result += '.continue().then(function () {';
+    node.update(result);
     node.parent.mustTransform = true;
     node.parent.addEndings = node.parent.addEndings ? node.parent.addEndings + 1 : 1;
 };
@@ -152,7 +165,6 @@ function compile(module, fn) {
   locals.Q = Q;
   locals[secretPrefix + 'stack'] = { lineno: 1, input: fn.toString(), filename: module.filename};
   locals[secretPrefix + 'rethrow'] = rethrow;
-  locals[secretPrefix + 'async'] = async;
   locals[secretPrefix + 'qjs'] = qjs;
 
   var compiled = comp(module, fn, compiler, locals);
@@ -165,9 +177,14 @@ module.exports = compile;
 function await(val) {
     return val;
 }
-function async(fn) {
-    return fn;
-}
 function rethrow(err) {
     throw err;
+}
+
+function removeBraces(str) {
+    if (/^\{/g.test(str) && /\}$/g.test(str)) {
+        return str.substr(1, str.length - 2);
+    } else {
+        return str;
+    }
 }

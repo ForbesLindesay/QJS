@@ -8,22 +8,27 @@ function compile(module, fn, compiler, locals) {
     });
 
     var output = compiler(fn.toString());
-    var compiledFn = new Function(
-        'require', 
-        '__filename', 
-        '__dirname', 
-        'module', 
-        'exports', 
-        'require', 
-        'return function(' + localsNames.join(', ') + ') { return ' + output + '}');
-    var result =  compiledFn(
-        module.require, 
-        module.filename, 
-        require('path').dirname(module.filename),
-        module, 
-        module.exports, 
-        module.require.bind(module));
-    return result.apply(null, localsValues);
+    try {
+        var compiledFn = new Function(
+            'require', 
+            '__filename', 
+            '__dirname', 
+            'module', 
+            'exports', 
+            'require', 
+            'return function(' + localsNames.join(', ') + ') { return ' + output + '}');
+        var result =  compiledFn(
+            module.require, 
+            module.filename, 
+            require('path').dirname(module.filename),
+            module, 
+            module.exports, 
+            module.require.bind(module));
+        return result.apply(null, localsValues);
+    } catch (ex) {
+        debug(output);
+        throw ex;
+    }
 }
 
 module.exports.debug = debug;

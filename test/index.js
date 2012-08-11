@@ -46,6 +46,15 @@ describe('`while`', function () {
     });
 });
 
+describe('`if`', function () {
+    var f = fixture('if');
+    describe('with await in body', function () {
+        it('works', function () {
+            await(f.run());
+        });
+    });
+});
+
     };
 });
 
