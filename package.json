@@ -13,9 +13,11 @@
     "streamline": "~0.4.5"
   },
   "devDependencies": {
+    "should": "*",
     "mocha": "*"
   },
   "scripts": {
+    "prepublish": "mocha",
     "test": "mocha"
   },
   "repository": {

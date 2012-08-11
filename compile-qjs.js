@@ -12,9 +12,14 @@ function transformAwait(node) {
     if (node.arguments.length !== 1) throw new Error('Await must have exactly one argument');
     var awaitValue = node.arguments[0].source();
     var awaitID = secretPrefix + 'await_result_' + (id++);
+    if (node.callee.range[0] < node.range[0]) node.callee.update('');
     node.update(awaitID);
     node.parent.mustTransform = true;
-    node.parent.awaitRequired = {source: awaitValue, key: awaitID};
+    if (!node.parent.awaitRequired) {
+        node.parent.awaitRequired = {source: awaitValue, key: awaitID};
+    } else {
+        throw new Error('Await already required');
+    }
 }
 function transformVariableDeclarator(node) {
     transformUsingParent(node);
@@ -30,7 +35,8 @@ function transformVariableDeclarator(node) {
         vars.push(decl.id.name);
     });
 
-    node.update('(' + node.source().replace(/^var/g, '   ') + ')');
+    var addSemicolon = /\;$/g.test(node.source());
+    node.update('(' + node.source().replace(/^var/g, '   ').replace(/\;$/g, '') + ')' + (addSemicolon?';':''));
 }
 statementTransformers['ReturnStatement'] = function transformReturnStatement(node) {
     if (node.awaitRequired) {
@@ -38,12 +44,21 @@ statementTransformers['ReturnStatement'] = function transformReturnStatement(nod
     }
     //node.parent.mustTransform = true;
 };
+statementTransformers['AssignmentExpression'] = transformUsingParent;
 statementTransformers['BinaryExpression'] = transformUsingParent;
 statementTransformers['UpdateExpression'] = transformUsingParent;
 statementTransformers['CallExpression'] = transformUsingParent;
-statementTransformers['ExpressionStatement'] = function transformExpressionStatement(node) {
+
+statementTransformers['MemberExpression'] = function transformMemberExpression(node) {
+    if (node.parent.type === 'BlockStatement') transformExpressionStatement(node);
+    else transformUsingParent(node);
+}
+statementTransformers['ExpressionStatement'] = transformExpressionStatement;
+
+function transformExpressionStatement(node) {
     var supportedBlockStatements = {};
     supportedBlockStatements['FunctionDeclaration'] = true;
+    supportedBlockStatements['FunctionExpression'] = true;
     supportedBlockStatements['WhileStatement'] = true;
     supportedBlockStatements['ForStatement'] = true;
     if (node.awaitRequired) {
@@ -52,15 +67,16 @@ statementTransformers['ExpressionStatement'] = function transformExpressionState
             node.parent.mustTransform = true;
             node.parent.addEndings = node.parent.addEndings ? node.parent.addEndings + 1 : 1;
         } else {
+            console.log(node);
             console.log(node.parent.type);
             console.log(node.parent.parent.type);
         }
     } else {
-        node.parent.mustTransform = node.mustTransform;
+        node.parent.mustTransform = node.parent.mustTransform || node.mustTransform;
     }
 };
 function transformBlockStatement(node) {
-    node.parent.mustTransform = node.mustTransform;
+    node.parent.mustTransform = node.parent.mustTransform || node.mustTransform;
     var src = node.source();
     while (node.addEndings && (node.addEndings--)) {
         src += ')}';
@@ -71,7 +87,11 @@ function transformBlockStatement(node) {
     node.update(src);
 };
 statementTransformers['WhileStatement'] = function transformWhileStatement(node) {
-    node.update('return ' + secretPrefix + 'qjs' + '.while(function () { return ' + node.test.source() + '; }).do(function ()  ' + node.body.source() + ')' + 
+    var test = node.test.source();
+    if (node.awaitRequired) {
+        test = 'Q.when(' + node.awaitRequired.source + ', function _qjs(' + node.awaitRequired.key + ') {return ' + test + '});';
+    }
+    node.update('return ' + secretPrefix + 'qjs' + '.while(function () { return ' + test + '; }).do(function ()  ' + node.body.source() + ')' + 
         '.continue().then(function () {');
     node.parent.mustTransform = true;
     node.parent.addEndings = node.parent.addEndings ? node.parent.addEndings + 1 : 1;
@@ -87,11 +107,19 @@ statementTransformers['ForStatement'] = function transformForStatement(node) {
 };
 
 function transformUsingParent(node) {
-    node.parent.awaitRequired = node.awaitRequired;
-    node.parent.mustTransform = node.mustTransform;
+    if (!node.parent.awaitRequired) {
+        node.parent.awaitRequired = node.awaitRequired;
+    } else {
+        throw new Error('Await already required');
+    }
+    node.parent.mustTransform = node.parent.mustTransform || node.mustTransform;
 }
 function transformNode(node) {
-    if (node.type === 'BlockStatement') {
+    if (node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration') {
+        if (node.awaitRequired) {
+            console.log(node);
+        }
+    } else if (node.type === 'BlockStatement') {
         transformBlockStatement(node);
     } else if (node.type === 'VariableDeclaration') {
         transformVariableDeclarator(node);
@@ -103,6 +131,8 @@ function transformNode(node) {
         }
         console.log(node);
         console.log(node.awaitRequired);
+    } else if (node.type === 'WhileStatement') {
+        console.log(node);
     }
 }
 function compiler( fn) {
@@ -116,6 +146,7 @@ function compiler( fn) {
 }
 
 function compile(module, fn) {
+  if (arguments.length !== 2) throw new Error('Compile must be supplied with exactly 2 arguments: a module object and a function to compile.')
   var locals = {};
   locals.await = await;
   locals.Q = Q;
@@ -125,7 +156,7 @@ function compile(module, fn) {
   locals[secretPrefix + 'qjs'] = qjs;
 
   var compiled = comp(module, fn, compiler, locals);
-  comp.debug(compiled);
+  //comp.debug(compiled);
   compiled();
 }
 
