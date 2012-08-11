@@ -11,5 +11,4 @@ require('../../').compile(module, function () {
             return 1;
         }
     };
-    require('../../compile').debug(module.exports.inCondition);
 });

@@ -123,4 +123,4 @@ function once_qjs(fn, message) {
   };
 }
 
-module.exports.compile = require('./compile-qjs');
+module.exports.compile = require('./lib/compile-qjs');
