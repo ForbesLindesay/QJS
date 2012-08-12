@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "esprima": "~0.9.9",
-    "falafel": "~0.1.0",
+    "falafel": "~0.1.1",
     "q": "~0.8.6",
     "streamline": "~0.4.5"
   },
