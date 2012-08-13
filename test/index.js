@@ -31,7 +31,7 @@ describe('`return`', function () {
         await(f.appendFoo(Q.delay('bar', 0))).should.equal('barfoo');
     });
 });
-
+/*
 describe('`while`', function () {
     var f = fixture('while');
     describe('with await in body', function () {
@@ -45,12 +45,27 @@ describe('`while`', function () {
         });
     });
 });
-
+ */
 describe('`if`', function () {
     var f = fixture('if');
-    describe('with await in body', function () {
+    describe('with await in consequent', function () {
         it('works', function () {
-            await(f.run());
+            await(f.inConsequent()).should.equal('foo');
+        });
+    });
+    describe('with await in alternate', function () {
+        it('works', function () {
+            await(f.inAlternate()).should.equal('foo');
+        });
+    });
+    describe('with await in condition', function () {
+        it('works', function () {
+            await(f.inCondition()).should.equal('foo');
+        });
+    });
+    describe('with await in all 3', function () {
+        it('works', function () {
+            await(f.inAllThree()).should.equal('foo');
         });
     });
 });
