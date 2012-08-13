@@ -17,35 +17,35 @@ describe('code without await', function () {
     });
 });
 describe('`return`', function () {
-    var f = fixture('return');
+    var ret = fixture('return');
     it('works with a plain await', function (done) {
-        assert.strictEqual(await(f.run()), undefined);
+        assert.strictEqual(await(ret.run()), undefined);
     });
     it('works with a plain await true', function (done) {
-        await(f.run(true)).should.equal(true);
+        await(ret.run(true)).should.equal(true);
     });
     it('works with expressions', function (done) {
-        await(f.appendFoo('bar')).should.equal('barfoo');
+        await(ret.appendFoo('bar')).should.equal('barfoo');
     });
     it('works with actual promises', function (done) {
-        await(f.appendFoo(Q.delay('bar', 0))).should.equal('barfoo');
+        await(ret.appendFoo(Q.delay('bar', 0))).should.equal('barfoo');
     });
 });
-/*
+
 describe('`while`', function () {
-    var f = fixture('while');
+    var wh = fixture('while');
     describe('with await in body', function () {
         it('works', function () {
-            await(f.inBody()).should.equal(2);
+            await(wh.inBody()).should.equal(2);
         });
     });
     describe('with await in condition', function () {
         it('works', function () {
-            await(f.inCondition()).should.equal(2);
+            await(wh.inCondition()).should.equal(2);
         });
     });
 });
- */
+
 describe('`if`', function () {
     var f = fixture('if');
     describe('with await in consequent', function () {
