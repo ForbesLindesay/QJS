@@ -60,7 +60,6 @@ describe('`while`', function () {
 
 describe('`if`', function fn() {
     var f = fixture('if');
-    debug(fn);
     describe('with await in consequent', function () {
         it('works', function () {
             await(f.inConsequent()).should.equal('foo');
