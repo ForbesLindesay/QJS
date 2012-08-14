@@ -6,7 +6,7 @@ require('../../').compile(module, function () {
         }
     };
     module.exports.inParameter = function () {
-        with (await(Q.resolve(obj))) {
+        with (await(Q.delay(obj, 1))) {
             return result + 'bar';
         }
     };

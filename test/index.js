@@ -89,6 +89,38 @@ describe('`with`', function () {
             await(f.inBody()).should.equal('foobar');
         });
     });
+    describe('with await in parameter', function () {
+        it('works', function () {
+            await(f.inParameter()).should.equal('foobar');
+        });
+    });
+});
+
+describe('`for`', function () {
+    var f = fixture('for');
+    describe('with await in init', function () {
+        it('works', function () {
+            await(f.inInit()).should.equal(3);
+        });
+    });
+
+    describe('with await in body', function () {
+        it('works', function () {
+            await(f.inBody()).should.equal(3);
+        });
+    });
+
+    describe('with await in condition', function () {
+        it('works', function () {
+            await(f.inCondition()).should.equal(3);
+        });
+    });
+
+    describe('with await in update', function () {
+        it('works', function () {
+            await(f.inUpdate()).should.equal(3);
+        });
+    });
 });
 
     };
