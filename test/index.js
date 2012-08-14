@@ -123,6 +123,20 @@ describe('`for`', function () {
     });
 });
 
+describe('`try` and `catch`', function () {
+    var f = fixture('trycatch');
+    describe('with a successful operation', function () {
+        it('succeeds', function () {
+            await(f.onSuccess()).should.equal(4);
+        });
+    });
+    describe('with an unsuccessful operation', function () {
+        it('catches the exception', function () {
+            await(f.onFail()).should.equal('caught');
+        });
+    });
+});
+
     };
 });
 
