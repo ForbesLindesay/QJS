@@ -1,6 +1,6 @@
 require('../').compile(module, function () {
-    module.exports.runTests = function (describe, it) {
-
+    module.exports.runTests = function foo(describe, it) {
+//debug(foo);
 
 var assert = require('should');
 function fixture(name) {

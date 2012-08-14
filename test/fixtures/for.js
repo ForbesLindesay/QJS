@@ -22,8 +22,8 @@ require('../../').compile(module, function () {
     };
     module.exports.inUpdate = function () {
         var x = 0;
-        for (var i = 0; i < 3; i += await(Q.delay(1, 0))) {
-            x++;
+        for (var i = 0; i < 1; i += await(Q.delay(1, 0))) {
+            x+= 3;
         }
         return x;
     };
