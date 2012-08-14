@@ -19,7 +19,7 @@
   },
   "scripts": {
     "prepublish": "mocha",
-    "test": "mocha"
+    "test": "mocha -R spec"
   },
   "repository": {
     "type": "git",
