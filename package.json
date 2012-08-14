@@ -10,7 +10,8 @@
     "esprima": "~0.9.9",
     "falafel": "~0.1.1",
     "q": "~0.8.6",
-    "streamline": "~0.4.5"
+    "streamline": "~0.4.5",
+    "mustache": "~0.5.2"
   },
   "devDependencies": {
     "should": "*",

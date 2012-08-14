@@ -17,14 +17,14 @@ require('../../').compile(module, function () {
         result.should.equal('foo');
         return result;
     };
-    module.exports.inCondition = function inCondition() {
+    module.exports.inCondition = function () {
         if (await(Q.delay(false, 5))) {
             return 'bar';
         } else {
             return 'foo';
         }
     };
-    module.exports.inAllThree = function inAllThree(foo) {
+    module.exports.inAllThree = function (foo) {
         if (await(Q.delay(false, 5))) {
             return await('bar');
         } else {
