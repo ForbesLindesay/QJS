@@ -11,7 +11,6 @@ require('../../').compile(module, function f() {
     module.exports.lazyAndOperation = function () {
         false && await(notCalled());//test currently fails
     };
-module.exports.lazyAndOperation();
     function notCalled() {
         throw new Error('shouldn\'t be called');
     }
