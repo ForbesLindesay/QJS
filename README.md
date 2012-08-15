@@ -11,10 +11,10 @@ Hello World Example
 PromisedMath.js
 
 ```javascript
-require('qjs')(function () {
+require('qjs').compile(module, function () {
     //All your module code must go in here.
 
-    module.add = function (a, b) {
+    module.exports.add = function (a, b) {
         return await(a) + await(b);
     };
 });
@@ -29,6 +29,31 @@ math.add(Q.delay(3, 5000), Q.delay(2, 5000)).then(console.log).end();
 ```
 
 If you ran consumer.js, it would create a _promise_ for `2` and a _promise_ for `3`.  These promises both take 5 seconds to resolve (you could imagine them being pulled from a server).  The add method recieves both promises and then waits for both to be resolved before adding them together.  We then log the output of 5.
+
+Useful Example
+---------------------
+
+api.js
+
+```javascript
+var Q = require('q');
+var api = require('api');
+module.exports.getNextMessage = Q.nbind(api.getNextMessage);
+```
+
+index.js
+
+```javascript
+require('qjs').compile(module, function () {
+    //All your module code must go in here.
+    var api = require('./api');
+    function run() {
+        while (message = await(api.getNextMessage())) {
+            console.log(message);
+        }
+    };
+});
+```
 
 API
 ---

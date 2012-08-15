@@ -1,6 +1,5 @@
 require('../').compile(module, function () {
-    module.exports.runTests = function foo(describe, it) {
-//debug(foo);
+    module.exports.runTests = function (describe, it) {
 
 var assert = require('should');
 function fixture(name) {
@@ -133,6 +132,15 @@ describe('`try` and `catch`', function () {
     describe('with an unsuccessful operation', function () {
         it('catches the exception', function () {
             await(f.onFail()).should.equal('caught');
+        });
+    });
+});
+
+var lazyOps = fixture('lazy-operators');
+describe('`&&`', function () {
+    describe('with both awaits resulting in `true`', function () {
+        it('works', function () {
+            await(lazyOps.normalOperation()).should.equal(true);
         });
     });
 });
