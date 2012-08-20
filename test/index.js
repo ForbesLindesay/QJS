@@ -153,7 +153,7 @@ describe('operators (`&&`, `||`)', function () {
         });
     });
 });
-describe('await with a member expression (e.g. `await({foo:\'bar\'}).foo`)', function () {
+describe('await with a member expression (e.g. `return await({foo:\'bar\'}).foo`)', function () {
     it('works', function () {
         await(fixture('member-expressions').run()).should.equal('bar');
     });
