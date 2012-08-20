@@ -146,8 +146,8 @@ describe('`try` and `catch`', function () {
 });
 
 var lazyOps = fixture('lazy-operators');
-describe('`&&`', function () {
-    describe('with both awaits resulting in `true`', function () {
+describe('operators (`&&`, `||`)', function () {
+    describe('when it doesn\'t matter if they support lazy evaluation', function () {
         it('works', function () {
             await(lazyOps.normalOperation()).should.equal(true);
         });

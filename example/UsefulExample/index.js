@@ -2,7 +2,6 @@ require('../../').compile(module, function () {
     //All your module code must go in here.
     var api = require('./api');
     function run() {
-        debug(run);
         var message;
         while (true) {
             var err = false;
@@ -19,5 +18,5 @@ require('../../').compile(module, function () {
             }
         }
     }
-    run();
+    run().end();
 });

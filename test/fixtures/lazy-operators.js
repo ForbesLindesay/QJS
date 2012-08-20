@@ -1,5 +1,5 @@
 require('../../').compile(module, function f() {
-    debug(f);
+    //debug(f);
     module.exports.normalOperation = function () {
         var a = await(Q.resolve(true)) && await(Q.delay(true, 0));
         var b = await(Q.resolve(false)) || await(Q.delay(true, 0));

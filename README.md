@@ -28,7 +28,9 @@ var math = require('./PromisedMath');
 math.add(Q.delay(3, 5000), Q.delay(2, 5000)).then(console.log).end();
 ```
 
-If you ran consumer.js, it would create a _promise_ for `2` and a _promise_ for `3`.  These promises both take 5 seconds to resolve (you could imagine them being pulled from a server).  The add method recieves both promises and then waits for both to be resolved before adding them together.  We then log the output of 5.
+If you ran consumer.js, it would create a _promise_ for `2` and a _promise_ for `3`.  These promises both take 5 seconds to resolve (you could imagine them being pulled from a server).  The add method recieves both promises and then waits (sequentially) for both to be resolved before adding them together.  We then log the output of 5.
+
+Because the time starts when we create the promise, it is not important that we then wait for them sequentially.
 
 Useful Example
 ---------------------
@@ -66,3 +68,11 @@ Contributing
 ------------
 
 Please fork and update this project, it's very much a work in progress, but hopefully someone will find it useful.
+
+Unsupported Features
+--------------------
+
+ - Await in catch blocks
+ - Finally blocks where there's an await in the try block (or the finally block)
+ - Lazy operations such as `&&` and `||` are not always as lazy as they should be if there's an await on the right hand side of the expression.
+ - Select Case with an await statement in it.
