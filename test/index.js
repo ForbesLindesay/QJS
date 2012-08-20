@@ -14,11 +14,20 @@ function fixture(name) {
     }
 }
 
-describe('code without await', function () {
-    it('runs', function () {
+describe('code without `await`', function () {
+    it('runs exactly as it normally would', function () {
         fixture('runs').ran.should.equal(true);
     });
 });
+
+describe('code with an `await` that\'s not called', function () {
+    it('always returns a promise', function () {
+        return fixture('runs').withoutCallingAwait().then(function (res) {
+            res.should.equal('bar');
+        });
+    });
+});
+
 describe('`return`', function () {
     var ret = fixture('return');
     it('works with a plain await', function () {
