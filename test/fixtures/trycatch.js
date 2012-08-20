@@ -8,10 +8,12 @@ require('../../').compile(module, function () {
         }
     };
     module.exports.onFail = function () {
+        var res = 'not caught';
         try {
             return await(Q.reject(new Error('message')));
         } catch (ex) {
-            return 'caught';
+            res = 'caught';
         }
+        return res;
     };
 });
