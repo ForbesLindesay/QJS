@@ -72,7 +72,10 @@ Please fork and update this project, it's very much a work in progress, but hope
 Unsupported Features
 --------------------
 
+I will accept pull requests that fix these, and I intend to fix all of them in the near future.  In the mean time, if I find it and can't fix it I document it.
+
  - Await in catch blocks
  - Finally blocks where there's an await in the try block (or the finally block)
  - Lazy operations such as `&&` and `||` are not always as lazy as they should be if there's an await on the right hand side of the expression.
  - Select Case with an await statement in it.
+ - `arguments` is not useable inside functions that contain the await keyword.
