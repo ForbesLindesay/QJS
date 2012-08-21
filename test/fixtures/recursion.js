@@ -2,7 +2,7 @@ require('../../').compile(module, function () {
     var Q = require('q');
     module.exports.fact = function fact(n) {
         if (n === 0) return 1;
-        var next = await(Q.delay(n - 1, 1));
+        var next = await(Q.resolve(n - 1));
         return await(fact(next)) * n;
     };
     module.exports.all = function all() {

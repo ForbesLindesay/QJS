@@ -161,7 +161,12 @@ describe('`await` with a member expression (e.g. `return await({foo:\'bar\'}).fo
 
 describe('recursion', function () {
     it('works like any other function call', function () {
-        await(fixture('recursion').fact(4)).should.equal(24);
+        await(fixture('recursion').fact(3)).should.equal(6);
+    });
+    it('can take arbitary arguments and use them like an array', function () {
+        var res = await(fixture('recursion').all(Q.delay(1,1), Q.delay(2,2)));
+        res[0].should.equal(1);
+        res[1].should.equal(2);
     });
 });
     };
