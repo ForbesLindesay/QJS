@@ -79,3 +79,4 @@ I will accept pull requests that fix these, and I intend to fix all of them in t
  - Lazy operations such as `&&` and `||` are not always as lazy as they should be if there's an await on the right hand side of the expression.
  - Select Case with an await statement in it.
  - `arguments` is not useable inside functions that contain the await keyword.
+ - Recursion doesn't work properly for functions with await in them.

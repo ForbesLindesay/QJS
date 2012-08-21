@@ -153,12 +153,17 @@ describe('operators (`&&`, `||`)', function () {
         });
     });
 });
-describe('await with a member expression (e.g. `return await({foo:\'bar\'}).foo`)', function () {
+describe('`await` with a member expression (e.g. `return await({foo:\'bar\'}).foo`)', function () {
     it('works', function () {
         await(fixture('member-expressions').run()).should.equal('bar');
     });
 });
 
+describe('recursion', function () {
+    it('works like any other function call', function () {
+        await(fixture('recursion').fact(4)).should.equal(24);
+    });
+});
     };
 });
 
