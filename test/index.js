@@ -1,5 +1,5 @@
 require('../').compile(module, function () {
-    module.exports.runTests = function (describe, it) {
+    module.exports.runTests = function runTests(describe, it) {
 
 var assert = require('should');
 function fixture(name) {
@@ -169,6 +169,56 @@ describe('recursion', function () {
         res[1].should.equal(2);
     });
 });
+
+//debug(runTests);
+describe('`expressify`', function () {
+    var Q = require('q');
+    var QJS = require('../');
+    describe('when you return continue', function () {
+        it('calls next', function f() {
+            return Q.ncall(function (done) {
+                QJS.expressify(function (req, res, cont) {
+                    await(Q.delay(1));
+                    return cont;
+                })(null, null, done);
+            });
+        });
+    });
+    describe('when you return a value', function () {
+        it('does nothing', function f() {
+            return Q.ncall(function (done) {
+                QJS.expressify(function (req, res, cont) {
+                    return 'continue';
+                })(null, null, function () {
+                    done(new Error('Why did you call done?'));
+                });
+                setTimeout(function () {
+                    done();
+                }, 20);
+            });
+        });
+    });
+    describe('when you throw an error', function () {
+        it('passes the error on to next', function f() {
+            return Q.ncall(function (done) {
+                QJS.expressify(function (req, res, cont) {
+                    await(Q.delay(1));
+                    throw new Error('I just can\'t get used to something so right');
+                })(null, null, function (err) {
+                    if (err) {
+                        done();
+                    } else {
+                        done(new Error('You should pass that error on.'));
+                    }
+                });
+                setTimeout(function () {
+                    done();
+                }, 20);
+            });
+        });
+    });
+});
+
     };
 });
 
