@@ -3,7 +3,7 @@
 QJS
 ===
 
-QJS adds an await keyword for use with Q promises.  To use it, you must 'compile' your code.  Unfortunately this somewhat destroy's your stack traces at the moment.  I'd really like to come up with a way of repairing them. Other than that though, it's pretty much perfect.
+QJS adds an await keyword for use with Q promises.  To use it, you must 'compile' your code.  Unfortunately this somewhat destroy's your stack traces at the moment.  I'd really like to come up with a way of repairing them. Other than that though, it's pretty much perfect :)
 
 Hello World Example
 -------------------

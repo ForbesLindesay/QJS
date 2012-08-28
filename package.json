@@ -7,8 +7,6 @@
     "test": "test"
   },
   "dependencies": {
-    "esprima": "~0.9.9",
-    "falafel": "~0.1.1",
     "q": "~0.8.6",
     "mustache": "~0.5.2"
   },
