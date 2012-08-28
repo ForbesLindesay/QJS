@@ -1,12 +1,12 @@
 require('../../').compile(module, function () {
     module.exports.run = function (foo) {
-        return await(foo);
+        return yield(foo);
     };
     module.exports.appendFoo = function (foo) {
-        return await(foo) + 'foo';
+        return yield(foo) + 'foo';
     };
 
     module.exports.nested = function () {
-        return await(Q.delay(await(Q.delay('foo',1)) + 'bar', 1)) + 'bash';
+        return yield(Q.delay(yield(Q.delay('foo',1)) + 'bar', 1)) + 'bash';
     };
 });

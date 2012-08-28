@@ -14,15 +14,15 @@ function fixture(name) {
     }
 }
 
-describe('code without `await`', function () {
+describe('code without `yield`', function () {
     it('runs exactly as it normally would', function () {
         fixture('runs').ran.should.equal(true);
     });
 });
 
-describe('code with an `await` that\'s not called', function () {
+describe('code with an `yield` that\'s not called', function () {
     it('always returns a promise', function () {
-        return fixture('runs').withoutCallingAwait().then(function (res) {
+        return fixture('runs').withoutCallingYield().then(function (res) {
             res.should.equal('bar');
         });
     });
@@ -30,103 +30,103 @@ describe('code with an `await` that\'s not called', function () {
 
 describe('`return`', function () {
     var ret = fixture('return');
-    it('works with a plain await', function () {
-        assert.strictEqual(await(ret.run()), undefined);
+    it('works with a plain yield', function () {
+        assert.strictEqual(yield(ret.run()), undefined);
     });
-    it('works with a plain await true', function () {
-        await(ret.run(true)).should.equal(true);
+    it('works with a plain yield true', function () {
+        yield(ret.run(true)).should.equal(true);
     });
     it('works with expressions', function () {
-        await(ret.appendFoo('bar')).should.equal('barfoo');
+        yield(ret.appendFoo('bar')).should.equal('barfoo');
     });
     it('works with actual promises', function () {
-        await(ret.appendFoo(Q.delay('bar', 0))).should.equal('barfoo');
+        yield(ret.appendFoo(Q.delay('bar', 0))).should.equal('barfoo');
     });
-    it('works with nested awaits', function () {
-        await(ret.nested()).should.equal('foobarbash');
+    it('works with nested yields', function () {
+        yield(ret.nested()).should.equal('foobarbash');
     });
 });
 
 describe('`while`', function () {
     var wh = fixture('while');
-    describe('with await in body', function () {
+    describe('with yield in body', function () {
         it('works', function () {
-            await(wh.inBody()).should.equal(2);
+            yield(wh.inBody()).should.equal(2);
         });
     });
-    describe('with await in condition', function () {
+    describe('with yield in condition', function () {
         it('works', function () {
-            await(wh.inCondition()).should.equal(4);
+            yield(wh.inCondition()).should.equal(4);
         });
     });
     describe('with lots of tasks in parallel', function () {
         it('is performant', function () {
-            await(wh.inParallel());
+            yield(wh.inParallel());
         });
     });
 });
 
 describe('`if`', function fn() {
     var f = fixture('if');
-    describe('with await in consequent', function () {
+    describe('with yield in consequent', function () {
         it('works', function () {
-            await(f.inConsequent()).should.equal('foo');
+            yield(f.inConsequent()).should.equal('foo');
         });
     });
-    describe('with await in alternate', function () {
+    describe('with yield in alternate', function () {
         it('works', function () {
-            await(f.inAlternate()).should.equal('foo');
+            yield(f.inAlternate()).should.equal('foo');
         });
     });
-    describe('with await in condition', function () {
+    describe('with yield in condition', function () {
         it('works', function () {
-            await(f.inCondition()).should.equal('foo');
+            yield(f.inCondition()).should.equal('foo');
         });
     });
-    describe('with await in all 3', function () {
+    describe('with yield in all 3', function () {
         it('works', function () {
-            await(f.inAllThree()).should.equal('foo');
+            yield(f.inAllThree()).should.equal('foo');
         });
     });
 });
 
 describe('`with`', function () {
     var f = fixture('with');
-    describe('with await in body', function () {
+    describe('with yield in body', function () {
         it('works', function () {
-            await(f.inBody()).should.equal('foobar');
+            yield(f.inBody()).should.equal('foobar');
         });
     });
-    describe('with await in parameter', function () {
+    describe('with yield in parameter', function () {
         it('works', function () {
-            await(f.inParameter()).should.equal('foobar');
+            yield(f.inParameter()).should.equal('foobar');
         });
     });
 });
 
 describe('`for`', function () {
     var f = fixture('for');
-    describe('with await in init', function () {
+    describe('with yield in init', function () {
         it('works', function () {
-            await(f.inInit()).should.equal(3);
+            yield(f.inInit()).should.equal(3);
         });
     });
 
-    describe('with await in body', function () {
+    describe('with yield in body', function () {
         it('works', function () {
-            await(f.inBody()).should.equal(3);
+            yield(f.inBody()).should.equal(3);
         });
     });
 
-    describe('with await in condition', function () {
+    describe('with yield in condition', function () {
         it('works', function () {
-            await(f.inCondition()).should.equal(3);
+            yield(f.inCondition()).should.equal(3);
         });
     });
 
-    describe('with await in update', function () {
+    describe('with yield in update', function () {
         it('works', function () {
-            await(f.inUpdate()).should.equal(3);
+            yield(f.inUpdate()).should.equal(3);
         });
     });
 });
@@ -135,12 +135,12 @@ describe('`try` and `catch`', function () {
     var f = fixture('trycatch');
     describe('with a successful operation', function () {
         it('succeeds', function () {
-            await(f.onSuccess()).should.equal(4);
+            yield(f.onSuccess()).should.equal(4);
         });
     });
     describe('with an unsuccessful operation', function () {
         it('catches the exception', function () {
-            await(f.onFail()).should.equal('caught');
+            yield(f.onFail()).should.equal('caught');
         });
     });
 });
@@ -149,22 +149,22 @@ var lazyOps = fixture('lazy-operators');
 describe('operators (`&&`, `||`)', function () {
     describe('when it doesn\'t matter if they support lazy evaluation', function () {
         it('works', function () {
-            await(lazyOps.normalOperation()).should.equal(true);
+            yield(lazyOps.normalOperation()).should.equal(true);
         });
     });
 });
-describe('`await` with a member expression (e.g. `return await({foo:\'bar\'}).foo`)', function () {
+describe('`yield` with a member expression (e.g. `return yield({foo:\'bar\'}).foo`)', function () {
     it('works', function () {
-        await(fixture('member-expressions').run()).should.equal('bar');
+        yield(fixture('member-expressions').run()).should.equal('bar');
     });
 });
 
 describe('recursion', function () {
     it('works like any other function call', function () {
-        await(fixture('recursion').fact(3)).should.equal(6);
+        yield(fixture('recursion').fact(3)).should.equal(6);
     });
     it('can take arbitary arguments and use them like an array', function () {
-        var res = await(fixture('recursion').all(Q.delay(1,1), Q.delay(2,2)));
+        var res = yield(fixture('recursion').all(Q.delay(1,1), Q.delay(2,2)));
         res[0].should.equal(1);
         res[1].should.equal(2);
     });
@@ -178,7 +178,7 @@ describe('`expressify`', function () {
         it('calls next', function f() {
             return Q.ncall(function (done) {
                 QJS.expressify(function (req, res, cont) {
-                    await(Q.delay(1));
+                    yield(Q.delay(1));
                     return cont;
                 })(null, null, done);
             });
@@ -202,7 +202,7 @@ describe('`expressify`', function () {
         it('passes the error on to next', function f() {
             return Q.ncall(function (done) {
                 QJS.expressify(function (req, res, cont) {
-                    await(Q.delay(1));
+                    yield(Q.delay(1));
                     throw new Error('I just can\'t get used to something so right');
                 })(null, null, function (err) {
                     if (err) {

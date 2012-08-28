@@ -3,7 +3,10 @@
 QJS
 ===
 
-QJS adds an await keyword for use with Q promises.  To use it, you must 'compile' your code.  Unfortunately this somewhat destroy's your stack traces at the moment.  I'd really like to come up with a way of repairing them. Other than that though, it's pretty much perfect :)
+**Warning!! the api is not yet stable, it will be soon, so watch & star this repository if you're interested**
+
+
+QJS adds a `yield` keyword for use with Q promises.  To use it, you must 'compile' your code.  Unfortunately this somewhat destroy's your stack traces at the moment.  I'd really like to come up with a way of repairing them. Other than that though, it's pretty much perfect :)
 
 Hello World Example
 -------------------
@@ -15,7 +18,7 @@ require('qjs').compile(module, function () {
     //All your module code must go in here.
 
     module.exports.add = function (a, b) {
-        return await(a) + await(b);
+        return yield(a) + yield(b);
     };
 });
 ```
@@ -50,7 +53,7 @@ require('qjs').compile(module, function () {
     //All your module code must go in here.
     var api = require('./api');
     function run() {
-        while (message = await(api.getNextMessage())) {
+        while (message = yield(api.getNextMessage())) {
             console.log(message);
         }
     };
@@ -60,9 +63,9 @@ require('qjs').compile(module, function () {
 API
 ---
 
-The `qjs` library consists of a single function that compiles code that contains await into code that can run asyncronously.  If any part of a module requires use of await like keywords, the whole module should be wrapped by the qjs compiler.
+The `qjs` library consists of a single function that compiles code that contains yield into code that can run asyncronously.  If any part of a module requires use of yield like keywords, the whole module should be wrapped by the qjs compiler.
 
-Inside the compiler you have access to `await` which will return the result of a promise, once it has been resolved.  You also get access to `Q` which is the promise library and simply saves you putting `var Q = require('q');` at the top of your file.
+Inside the compiler you have access to `yield` which will return the result of a promise, once it has been resolved.  You also get access to `Q` which is the promise library and simply saves you putting `var Q = require('q');` at the top of your file.
 
 Contributing
 ------------
@@ -74,8 +77,8 @@ Unsupported Features
 
 I will accept pull requests that fix these, and I intend to fix all of them in the near future.  In the mean time, if I find it and can't fix it I document it.
 
- - Await in catch blocks
- - Finally blocks where there's an await in the try block (or the finally block)
- - Lazy operations such as `&&` and `||` are not always as lazy as they should be if there's an await on the right hand side of the expression.
- - Select Case with an await statement in it.
+ - yield in catch blocks
+ - Finally blocks where there's an yield in the try block (or the finally block)
+ - Lazy operations such as `&&` and `||` are not always as lazy as they should be if there's an yield on the right hand side of the expression.
+ - Select Case with an yield statement in it.
  

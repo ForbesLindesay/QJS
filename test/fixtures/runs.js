@@ -1,9 +1,9 @@
 require('../../').compile(module, function () {
     module.exports.ran = true;
 
-    module.exports.withoutCallingAwait = function () {
+    module.exports.withoutCallingYield = function () {
         if (false) {
-            await('foo');
+            yield('foo');
         }
         return 'bar';
     };

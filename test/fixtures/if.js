@@ -2,7 +2,7 @@ require('../../').compile(module, function () {
     module.exports.inConsequent = function () {
         var result = null;
         if (true) {
-            result = await(Q.delay('f', 2)) + 'oo';
+            result = yield(Q.delay('f', 2)) + 'oo';
         }
         result.should.equal('foo');
         return result;
@@ -12,23 +12,23 @@ require('../../').compile(module, function () {
         if (false) {
 
         } else {
-            result = await(Q.delay('f', 2)) + 'oo';
+            result = yield(Q.delay('f', 2)) + 'oo';
         }
         result.should.equal('foo');
         return result;
     };
     module.exports.inCondition = function () {
-        if (await(Q.delay(false, 5))) {
+        if (yield(Q.delay(false, 5))) {
             return 'bar';
         } else {
             return 'foo';
         }
     };
     module.exports.inAllThree = function (foo) {
-        if (await(Q.delay(false, 5))) {
-            return await('bar');
+        if (yield(Q.delay(false, 5))) {
+            return yield('bar');
         } else {
-            return await(Q.delay('f', 2)) + 'oo';
+            return yield(Q.delay('f', 2)) + 'oo';
         }
     }
 });

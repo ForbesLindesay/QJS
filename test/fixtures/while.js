@@ -2,14 +2,14 @@ require('../../').compile(module, function () {
     module.exports.inBody = function () {
         var i = 0;
         while ((++i) < 2) {
-            //await(Q.resolve(1));
-            await(Q.delay(1))
+            //yield(Q.resolve(1));
+            yield(Q.delay(1))
         }
         return i;
     };
     module.exports.inCondition = function () {
         var i = 0;
-        while (await(Q.resolve(++i)) < 4) {
+        while (yield(Q.resolve(++i)) < 4) {
         }
         return i;
     };
@@ -23,7 +23,7 @@ require('../../').compile(module, function () {
         }
         i = 0;
         while (i < 100) {
-            await(promises[i]);
+            yield(promises[i]);
             i++;
         }
     };
