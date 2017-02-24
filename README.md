@@ -3,6 +3,8 @@
 QJS
 ===
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ForbesLindesay/QJS.svg)](https://greenkeeper.io/)
+
 **Warning!! the api is not yet stable, it will be soon, so watch & star this repository if you're interested**
 
 
