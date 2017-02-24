@@ -7,8 +7,8 @@
     "test": "test"
   },
   "dependencies": {
-    "q": "~0.8.6",
-    "mustache": "~0.5.2"
+    "q": "~1.4.1",
+    "mustache": "~2.3.0"
   },
   "devDependencies": {
     "should": "*",
